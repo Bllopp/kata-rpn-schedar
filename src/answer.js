@@ -1,48 +1,57 @@
-const getAnswer = () => 42;
-
-
-var stack = [];
-
-const getStack = () => {
-    tokens.forEach(t => {
-        if(typeof t === 'string' && !Number.isNaN(t)) {
-            stack.push(t)
-        }
-    });
-    return stack;
-};
-
 const rpn = (string) => {
-    const tokens = string.split(' ')
-    const operators = ["+", "-"]
+    var stack = [];
+    var tokens = [];
+    tokens = string.split(' ')
 
-    
     tokens.forEach(t => {
-        if(typeof t === 'string' && !Number.isNaN(t)) {
-            stack.push(t)
+        if(!isNaN(t)) {
+            stack.push(parseInt(t))
         }
-        var res;
+        else {
         switch (t) {
             case "+":
                 stack.push(stack.pop() + stack.pop());
                 break;
             
             case "-":
-                res = -stack.pop() + stack.pop();
+                stack.push(-stack.pop() + stack.pop());
+                break;
+            
+            case "*": 
+                stack.push(stack.pop() * stack.pop());
+                break;
+
+            case "/": 
+                stack.push(rpnDivide(stack.pop(), stack.pop()));
+                break;
+
+            case "sqrt":
+                stack.push(Math.sqrt(stack.pop()))
+                break;
+
+            case "max":
+                stack = [parseFloat(Math.max(...stack))];
                 break;
                 
-        
             default:
-                new Error("invalid entry");
-                break;
-        }
+                throw new Error(`Invalid entry : ${t}`);
+                
+        }}
         
     });
+    if (stack.length != 1) {
+        throw new Error("error of synthax")
+    }
+    return stack[0];
+}
 
-    return stack;
+const rpnDivide = (denum, num) => {
+    if (denum == 0) {
+        throw new Error('Division par 0');
+    }
+    return num/denum;
 }
 
 
-module.exports = {getAnswer, getStack, rpn};
 
-// 20 2 +
+module.exports = {rpn, rpnDivide};
