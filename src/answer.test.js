@@ -25,7 +25,7 @@ describe('Basic operations (+, -, *, /)', () => {
 
 describe('throw of errors', () => {
   test('synthax error', () => {
-    expect(() => {rpn("1 + 1")}).toThrow("error of synthax")
+    expect(() => {rpn("1 + 1")}).toThrow("error of syntax")
   })
 })
 
